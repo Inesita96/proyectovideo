@@ -1,0 +1,54 @@
+<h3 style="display: none;" id="cargando">Cargando...</h3>
+<figure>
+  <video id="videoPlayer" width="500">
+    <source src="videos/video.mp4" id="vidsrc"  type="video/mp4">
+    Tu navegador no soporta el vídeo de HTML5
+  </video>
+  <figcaption>
+    <button id="play" aria-label="Play" role="button">►</button>
+    <input type="range" id="volume-slider" max="100" value="100">
+      Volumen
+    </input>
+    <input type="file" name="file[]"  id="videoLoader" accept="video/mp4" onchange="videoLoader(this)"/>
+  </figcaotion>
+</figure>
+<script> 
+  const video = document.getElementById("videoPlayer");
+  const volumeSlider = document.getElementById('volume-slider');
+  const playPauseButton = document.getElementById("play");
+
+  function playPause() {
+    if (video.paused) {
+      video.play();
+      playPauseButton.innerHTML = "&#10073;&#10073;";
+    } else {
+      video.pause();
+      playPauseButton.innerHTML = "►";
+    }
+  }
+
+  function videoLoader(e){
+    var cargando = document.getElementById('cargando');
+    video.pause();
+    video.style.display = 'none';
+    cargando.style.display = '';
+
+    var media = URL.createObjectURL(e.files[0]);
+    var source = document.getElementById('vidsrc');
+    
+    source.src = media;
+    video.load();
+    cargando.style.display = 'none';
+    video.style.display = '';
+    playPauseButton.click()
+  }
+
+  function audioSetter(e){
+    const value = e.target.value;
+    video.volume = value / 100;
+  }
+
+  playPauseButton.addEventListener("click", playPause);
+
+  volumeSlider.addEventListener('input', audioSetter);
+  </script>
